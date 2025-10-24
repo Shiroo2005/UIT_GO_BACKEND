@@ -1,0 +1,4 @@
+include:
+  - "/user-service/docker-compose.yml"
+  - "/driver-service/docker-compose.yml"
+  - "/trip-service/docker-compose.yml"
