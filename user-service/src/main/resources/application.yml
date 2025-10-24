@@ -1,5 +1,0 @@
-spring:
-  profiles:
-    active: dev #prod
-  application:
-    name: user-service
