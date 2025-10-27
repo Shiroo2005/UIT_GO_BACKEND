@@ -27,11 +27,23 @@ repositories {
 extra["springCloudVersion"] = "2025.0.0"
 
 dependencies {
+    implementation("com.github.f4b6a3:uuid-creator:6.1.1")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    implementation ("org.springframework.boot:spring-boot-starter-actuator")
+    implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation ("org.springframework.boot:spring-boot-starter-validation")
+    implementation ("org.springframework.boot:spring-boot-starter-security")
+    implementation ("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation ("org.mapstruct:mapstruct:1.6.3")
+    implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
+    implementation ("io.github.perplexhub:rsql-jpa-spring-boot-starter:6.0.32")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+    developmentOnly ("org.springframework.boot:spring-boot-docker-compose")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor ("org.mapstruct:mapstruct-processor:1.6.3")
+    runtimeOnly ("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
