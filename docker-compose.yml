@@ -1,4 +1,8 @@
 include:
-  - "/user-service/docker-compose.yml"
-  - "/driver-service/docker-compose.yml"
-  - "/trip-service/docker-compose.yml"
+  - driver-service/docker-compose.yml
+#  - user-service/docker-compose.yml
+#  - trip-service/docker-compose.yml
+
+networks:
+  microservice_network:
+    driver: bridge
