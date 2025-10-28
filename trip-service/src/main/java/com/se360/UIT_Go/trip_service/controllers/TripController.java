@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 @RequiredArgsConstructor
 @RequestMapping("/trips")
+@CrossOrigin("http://localhost:8080")
 public class TripController {
     private final TripService tripService;
 
