@@ -6,6 +6,7 @@ import com.se360.UIT_Go.trip_service.entities.Trip;
 import com.se360.UIT_Go.trip_service.enums.TripStatus;
 import com.se360.UIT_Go.trip_service.enums.UserRole;
 import com.se360.UIT_Go.trip_service.events.DriverAcceptTripMessage;
+import com.se360.UIT_Go.trip_service.events.DriverCompleteTripMessage;
 import com.se360.UIT_Go.trip_service.mappers.TripMapper;
 import com.se360.UIT_Go.trip_service.repositories.TripRepository;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +96,9 @@ public class TripServiceImpl implements TripService {
             throw new IllegalStateException("Trip is not ongoing");
         }
         trip.setStatus(TripStatus.COMPLETED);
+        DriverCompleteTripMessage message = new DriverCompleteTripMessage();
+        message.setDriverId(userId);
+        kafkaProducerService.sendTripCompleteMessage(message);
         return tripMapper.entityToResponse(trip);
     }
 
