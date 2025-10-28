@@ -33,8 +33,6 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-actuator")
     implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation ("org.springframework.boot:spring-boot-starter-validation")
-    implementation ("org.springframework.boot:spring-boot-starter-security")
-    implementation ("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation ("org.mapstruct:mapstruct:1.6.3")
     implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation ("io.github.perplexhub:rsql-jpa-spring-boot-starter:6.0.32")

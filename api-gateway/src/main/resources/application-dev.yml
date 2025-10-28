@@ -15,13 +15,20 @@ spring:
             - id: user-service
               uri: lb://user-service
               predicates:
-                - Path=/users/**
+                - Path=/user-service/**
             - id: trip-service
               uri: lb://trip-service
               predicates:
-                - Path=/trips/**
+                - Path=/trip-service/**
             - id: driver-service
               uri: lb://driver-service
               predicates:
                 - Path=/drivers/**
 
+springdoc:
+  swagger-ui:
+    urls:
+      - name: user-service
+        url: /user-service/v3/api-docs
+      - name: trip-service
+        url: /trip-service/v3/api-docs

@@ -1,7 +1,5 @@
 package com.se360.UIT_Go.trip_service.services;
 
-import com.se360.UIT_Go.trip_service.clients.UserClient;
-import com.se360.UIT_Go.trip_service.clients.dtos.UserResponse;
 import com.se360.UIT_Go.trip_service.dtos.TripRequest;
 import com.se360.UIT_Go.trip_service.dtos.TripResponse;
 import com.se360.UIT_Go.trip_service.entities.Trip;
@@ -13,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import com.github.f4b6a3.uuid.UuidCreator;
 
@@ -25,7 +22,6 @@ import java.util.Objects;
 public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final TripMapper tripMapper;
-    private final UserClient userClient;
 
     @Override
     public Page<TripResponse> getAll(Pageable pageable, Specification<Trip> specification) {
@@ -39,12 +35,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public TripResponse create(TripRequest request, Jwt jwt) {
-        String userId = jwt.getSubject();
-        UserResponse userResponse = userClient.getUser(userId);
-        if (userResponse == null) {
-            throw new IllegalStateException("User not found");
-        }
+    public TripResponse create(TripRequest request, String userId, UserRole role) {
         Trip trip = tripMapper.requestToEntity(request);
         trip.setId(UuidCreator.getTimeOrderedEpoch().toString());
         trip.setPassengerId(userId);
@@ -55,13 +46,8 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public TripResponse driverAcceptTrip(String tripId, Jwt jwt) {
-        String userId = jwt.getSubject();
-        UserResponse userResponse = userClient.getUser(userId);
-        if (userResponse == null) {
-            throw new IllegalStateException("User not found");
-        }
-        if (userResponse.getRole() != UserRole.DRIVER) {
+    public TripResponse driverAcceptTrip(String tripId, String userId, UserRole userRole) {
+        if (userRole != UserRole.DRIVER) {
             throw new IllegalStateException("Only driver can accept trip");
         }
         Trip trip = tripRepository.findById(tripId)
@@ -75,13 +61,8 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public TripResponse driverStartTrip(String tripId, Jwt jwt) {
-        String userId = jwt.getSubject();
-        UserResponse userResponse = userClient.getUser(userId);
-        if (userResponse == null) {
-            throw new IllegalStateException("User not found");
-        }
-        if (userResponse.getRole() != UserRole.DRIVER) {
+    public TripResponse driverStartTrip(String tripId, String userId, UserRole role) {
+        if (role != UserRole.DRIVER) {
             throw new IllegalStateException("Only driver can start trip");
         }
         Trip trip = tripRepository.findById(tripId)
@@ -95,8 +76,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public void cancelTrip(String tripId, Jwt jwt) {
-        String userId = jwt.getSubject();
+    public void cancelTrip(String tripId, String userId, UserRole role) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new IllegalStateException("Trip not found"));
         if (trip.getStatus() != TripStatus.SEARCHING && trip.getStatus() != TripStatus.ACCEPTED) {
