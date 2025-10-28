@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:8080")
 public class UserController {
   private final UserService userService;
   private final DriverProfileService driverProfileService;

@@ -6,6 +6,8 @@ import com.se360.UIT_Go.trip_service.entities.Trip;
 import com.se360.UIT_Go.trip_service.enums.UserRole;
 import com.se360.UIT_Go.trip_service.services.TripService;
 import io.github.perplexhub.rsql.RSQLJPASupport;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 @RequiredArgsConstructor
 @RequestMapping("/trips")
-@CrossOrigin("http://localhost:8080")
 public class TripController {
     private final TripService tripService;
 
@@ -33,26 +34,30 @@ public class TripController {
     }
 
     @PostMapping
-    public ResponseEntity<TripResponse> create(@Valid @RequestBody TripRequest request, @RequestHeader(value = "X-User-ID") String userId,
-                                               @RequestHeader(value = "X-User-Role") UserRole role) {
+    public ResponseEntity<TripResponse> create(@Valid @RequestBody TripRequest request,
+                                               @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                               @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
         return ResponseEntity.ok(tripService.create(request, userId, role));
     }
 
     @PostMapping("/{id}/accept")
-    public ResponseEntity<TripResponse> driverAcceptTrip(@PathVariable("id") String tripId, @RequestHeader(value = "X-User-ID") String userId,
-                                                         @RequestHeader(value = "X-User-Role") UserRole role) {
+    public ResponseEntity<TripResponse> driverAcceptTrip(@PathVariable("id") String tripId,
+                                                         @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                         @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
         return ResponseEntity.ok(tripService.driverAcceptTrip(tripId, userId, role));
     }
 
     @PostMapping("/{id}/start")
-    public ResponseEntity<TripResponse> driverStartTrip(@PathVariable("id") String tripId, @RequestHeader(value = "X-User-ID") String userId,
-                                                        @RequestHeader(value = "X-User-Role") UserRole role) {
+    public ResponseEntity<TripResponse> driverStartTrip(@PathVariable("id") String tripId,
+                                                        @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                        @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
         return ResponseEntity.ok(tripService.driverStartTrip(tripId, userId, role));
     }
 
     @PostMapping("/{id}/cancel")
-    public ResponseEntity<Void> passengerCancelTrip(@PathVariable("id") String tripId, @RequestHeader(value = "X-User-ID") String userId,
-                                                        @RequestHeader(value = "X-User-Role") UserRole role) {
+    public ResponseEntity<Void> passengerCancelTrip(@PathVariable("id") String tripId,
+                                                    @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                    @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
         tripService.cancelTrip(tripId, userId, role);
         return ResponseEntity.ok(null);
     }
