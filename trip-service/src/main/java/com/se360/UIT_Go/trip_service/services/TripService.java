@@ -19,5 +19,7 @@ public interface TripService {
 
     TripResponse driverStartTrip(String tripId, String userId, UserRole role);
 
+    TripResponse driverCompleteTrip(String tripId, String userId, UserRole role);
+
     void cancelTrip(String tripId, String userId, UserRole role);
 }

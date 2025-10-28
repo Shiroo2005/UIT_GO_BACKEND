@@ -33,6 +33,11 @@ public class TripController {
         return ResponseEntity.ok(tripService.getAll(pageable, specification));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<TripResponse> getById(@PathVariable("id") String tripId) {
+        return ResponseEntity.ok(tripService.getById(tripId));
+    }
+
     @PostMapping
     public ResponseEntity<TripResponse> create(@Valid @RequestBody TripRequest request,
                                                @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
@@ -52,6 +57,13 @@ public class TripController {
                                                         @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
                                                         @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
         return ResponseEntity.ok(tripService.driverStartTrip(tripId, userId, role));
+    }
+
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<TripResponse> driverCompleteTrip(@PathVariable("id") String tripId,
+                                                           @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                           @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
+        return ResponseEntity.ok(tripService.driverCompleteTrip(tripId, userId, role));
     }
 
     @PostMapping("/{id}/cancel")
