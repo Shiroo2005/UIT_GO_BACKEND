@@ -1,21 +1,76 @@
 package com.se360.UIT_Go.trip_service.controllers;
 
-import com.se360.UIT_Go.trip_service.clients.UserClient;
+import com.se360.UIT_Go.trip_service.dtos.TripRequest;
+import com.se360.UIT_Go.trip_service.dtos.TripResponse;
+import com.se360.UIT_Go.trip_service.entities.Trip;
+import com.se360.UIT_Go.trip_service.enums.UserRole;
+import com.se360.UIT_Go.trip_service.services.TripService;
+import io.github.perplexhub.rsql.RSQLJPASupport;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequiredArgsConstructor
 @RequestMapping("/trips")
 public class TripController {
+    private final TripService tripService;
 
-    private final UserClient userClient;
 
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public String getUsers( ){
+    @GetMapping
+    public ResponseEntity<Page<TripResponse>> getAll(@ParameterObject Pageable pageable, @RequestParam(value = "filter", required = false) String filter, @RequestParam(value = "all", required = false) boolean all) {
+        if (all) {
+            pageable = Pageable.unpaged();
+        }
+        Specification<Trip> specification = RSQLJPASupport.toSpecification(filter);
+        return ResponseEntity.ok(tripService.getAll(pageable, specification));
+    }
 
-        return "This is trip service" + " ____ User service tell: " + userClient.getUser() + " !. Done";
+    @GetMapping("{id}")
+    public ResponseEntity<TripResponse> getById(@PathVariable("id") String tripId) {
+        return ResponseEntity.ok(tripService.getById(tripId));
+    }
+
+    @PostMapping
+    public ResponseEntity<TripResponse> create(@Valid @RequestBody TripRequest request,
+                                               @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                               @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
+        return ResponseEntity.ok(tripService.create(request, userId, role));
+    }
+
+    @PostMapping("/{id}/accept")
+    public ResponseEntity<TripResponse> driverAcceptTrip(@PathVariable("id") String tripId,
+                                                         @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                         @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
+        return ResponseEntity.ok(tripService.driverAcceptTrip(tripId, userId, role));
+    }
+
+    @PostMapping("/{id}/start")
+    public ResponseEntity<TripResponse> driverStartTrip(@PathVariable("id") String tripId,
+                                                        @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                        @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
+        return ResponseEntity.ok(tripService.driverStartTrip(tripId, userId, role));
+    }
+
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<TripResponse> driverCompleteTrip(@PathVariable("id") String tripId,
+                                                           @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                           @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
+        return ResponseEntity.ok(tripService.driverCompleteTrip(tripId, userId, role));
+    }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<Void> passengerCancelTrip(@PathVariable("id") String tripId,
+                                                    @Parameter(hidden = true) @RequestHeader(value = "X-User-ID") String userId,
+                                                    @Parameter(hidden = true) @RequestHeader(value = "X-User-Role") UserRole role) {
+        tripService.cancelTrip(tripId, userId, role);
+        return ResponseEntity.ok(null);
     }
 }
