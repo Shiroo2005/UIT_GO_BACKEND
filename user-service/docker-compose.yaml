@@ -1,0 +1,39 @@
+services:
+  user-db:
+    image: 'mysql:latest'
+    container_name: user-db
+    environment:
+      - 'MYSQL_DATABASE=${USER_DB_DATABASE}'
+      - 'MYSQL_PASSWORD=${USER_DB_PASSWORD}'
+      - 'MYSQL_ROOT_PASSWORD=${USER_DB_PASSWORD}'
+      - 'MYSQL_USER=${USER_DB_USERNAME}'
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${USER_DB_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  user-service:
+    build: .
+    container_name: user-service
+    environment:
+      - 'USER_SERVICE_ACTIVE_PROFILE=pro'
+      - 'USER_DB_DATABASE=${USER_DB_DATABASE}'
+      - 'USER_DB_PASSWORD=${USER_DB_PASSWORD}'
+      - 'USER_DB_USERNAME=${USER_DB_USERNAME}'
+      - 'JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY}'
+      - 'JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}'
+    depends_on:
+      user-db:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+      api-gateway-service:
+        condition: service_started
+    ports:
+      - '8081'
+    networks:
+      - app-network

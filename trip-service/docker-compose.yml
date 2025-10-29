@@ -1,10 +1,39 @@
 services:
-  mysql:
+  trip-db:
     image: "mysql:latest"
+    container_name: trip-db
     environment:
-      - "MYSQL_DATABASE=mydatabase"
-      - "MYSQL_PASSWORD=secret"
-      - "MYSQL_ROOT_PASSWORD=verysecret"
-      - "MYSQL_USER=myuser"
+      - "MYSQL_DATABASE=${TRIP_DB_DATABASE}"
+      - "MYSQL_PASSWORD=${TRIP_DB_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${TRIP_DB_PASSWORD}"
+      - "MYSQL_USER=${TRIP_DB_USERNAME}"
     ports:
-      - "3306:3306"
+      - "3306"
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${USER_DB_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  trip-service:
+    build: .
+    container_name: trip-service
+    environment:
+      - 'TRIP_SERVICE_ACTIVE_PROFILE=pro'
+      - 'TRIP_DB_DATABASE=${TRIP_DB_DATABASE}'
+      - 'TRIP_DB_PASSWORD=${TRIP_DB_PASSWORD}'
+      - 'TRIP_DB_USERNAME=${TRIP_DB_USERNAME}'
+    depends_on:
+      trip-db:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+      api-gateway-service:
+        condition: service_started
+    ports:
+      - '8082'
+    networks:
+      - app-network
