@@ -32,3 +32,5 @@ springdoc:
         url: /user-service/v3/api-docs
       - name: trip-service
         url: /trip-service/v3/api-docs
+      - name: driver-service
+        url: /driver-service/v3/api-docs

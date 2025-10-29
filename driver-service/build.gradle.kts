@@ -10,7 +10,7 @@ description = "UIT-Go Cloud-Native"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -35,6 +35,8 @@ dependencies {
     implementation("redis.clients:jedis")
     implementation("me.paulschwarz:spring-dotenv:4.0.0")
     implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
+
 
 }
 
