@@ -7,5 +7,7 @@ public interface SecurityConstant {
             "/user-service/v3/api-docs/**",
             "/trip-service/swagger-ui/**",
             "/trip-service/v3/api-docs/**",
+            "/driver-service/v3/api-docs/**",
+            "/driver-service/swagger-ui/**",
     };
 }

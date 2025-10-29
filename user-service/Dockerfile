@@ -30,6 +30,6 @@ COPY --from=build /build/build/libs/*.jar app.jar
 
 USER appuser
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["java", "-jar", "app.jar"]
