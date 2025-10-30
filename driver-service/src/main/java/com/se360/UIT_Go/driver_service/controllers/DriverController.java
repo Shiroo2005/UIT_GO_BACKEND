@@ -4,14 +4,18 @@ package com.se360.UIT_Go.driver_service.controllers;
 import com.se360.UIT_Go.driver_service.constants.Topic;
 import com.se360.UIT_Go.driver_service.dto.DriverLocationRequest;
 import com.se360.UIT_Go.driver_service.dto.SearchDriversNearRequest;
-import com.se360.UIT_Go.driver_service.events.DriverAcceptTripMessage;
 import com.se360.UIT_Go.driver_service.services.driver.IDriverService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
 @RestController()
 @RequiredArgsConstructor
 @RequestMapping("/drivers")
@@ -38,12 +42,14 @@ public class DriverController {
     }
 
     @KafkaListener(topics = Topic.ACCEPT_TRIP_TOPIC, groupId = "mygroup")
-    public void driverAcceptTrip(DriverAcceptTripMessage message) {
-        this.driverService.updateStatusDriverAcceptTrip(message.getDriverId());
+    public void driverAcceptTrip(Map<String, Object> message) {
+        this.driverService.updateStatusDriverAcceptTrip(message.get("driverId").toString());
     }
 
     @KafkaListener(topics = Topic.COMPLETE_TRIP_TOPIC, groupId = "mygroup")
-    public void driverCompleteTrip(DriverAcceptTripMessage message) {
-        this.driverService.updateStatusDriverOffTrip(message.getDriverId());
+    public void driverCompleteTrip(HashMap<String, Object> message) {
+        System.out.println("Received message: " + message);
+
+        this.driverService.updateStatusDriverOffTrip(message.get("driverId").toString());
     }
 }
