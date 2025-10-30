@@ -1,8 +1,9 @@
 include:
-  - driver-service/docker-compose.yml
-#  - user-service/docker-compose.yml
-#  - trip-service/docker-compose.yml
-
+  - ./eureka-server/docker-compose.yml
+  - ./api-gateway/docker-compose.yml
+  - ./user-service/docker-compose.yaml
+  - ./trip-service/docker-compose.yml
+  - ./infrastructure/docker-compose.yml
 networks:
-  microservice_network:
+  app-network:
     driver: bridge

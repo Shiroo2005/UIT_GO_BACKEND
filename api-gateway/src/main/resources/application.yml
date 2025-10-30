@@ -1,5 +1,5 @@
 spring:
   profiles:
-    active: dev,imp #prod
+    active: ${API_GATEWAY_ACTIVE_PROFILE:dev,imp}
   application:
     name: api-gateway

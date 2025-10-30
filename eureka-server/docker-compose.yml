@@ -1,0 +1,8 @@
+services:
+  discovery-server:
+    build: .
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - app-network
