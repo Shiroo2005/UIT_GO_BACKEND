@@ -1,0 +1,24 @@
+services:
+  redis-driver-service:
+    image: redis:7-alpine
+    container_name: redis-driver-service
+    command:
+      [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--requirepass",
+        "${REDIS_PASSWORD}",
+      ]
+    restart: always
+    ports:
+      - "6379"
+    volumes:
+      - redis_data:/data
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+volumes:
+  redis_data:

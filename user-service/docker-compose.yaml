@@ -38,13 +38,14 @@ services:
       - "USER_DB_USERNAME=${USER_DB_USERNAME}"
       - "JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY}"
       - "JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}"
+      - "START_SLEEP_SECONDS=30"
     depends_on:
       user-db:
         condition: service_healthy
       discovery-server:
-        condition: service_started
+        condition: service_healthy
       api-gateway-service:
-        condition: service_started
+        condition: service_healthy
     ports:
       - "8081"
     networks:

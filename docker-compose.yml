@@ -4,6 +4,7 @@ include:
   - ./user-service/docker-compose.yaml
   - ./trip-service/docker-compose.yml
   - ./infrastructure/docker-compose.yml
+  - ./driver-service/docker-compose.yml
 networks:
   app-network:
     driver: bridge

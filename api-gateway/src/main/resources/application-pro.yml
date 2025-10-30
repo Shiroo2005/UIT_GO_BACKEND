@@ -23,7 +23,7 @@ spring:
             - id: driver-service
               uri: lb://driver-service
               predicates:
-                - Path=/drivers/**
+                - Path=/driver-service/**
 
 springdoc:
   swagger-ui:
@@ -32,6 +32,8 @@ springdoc:
         url: /user-service/v3/api-docs
       - name: trip-service
         url: /trip-service/v3/api-docs
+      - name: driver-service
+        url: /driver-service/v3/api-docs
 
 jwt:
   public-key: ${JWT_PUBLIC_KEY}

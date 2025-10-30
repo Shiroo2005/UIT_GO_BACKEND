@@ -1,5 +1,5 @@
 spring:
   profiles:
-    active: dev #prod
+    active: ${DRIVER_SERVICE_ACTIVE_PROFILE:dev}
   application:
     name: driver-service
