@@ -32,7 +32,7 @@ public class ApiDocConfig {
                 v -> new Server().url(v.getUri().toString() + contextPath)
         ).toList();
         return new OpenAPI()
-                .servers(servers)
+               .servers(servers)
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components().addSecuritySchemes("bearerAuth", createAPIKeyScheme()));
     }

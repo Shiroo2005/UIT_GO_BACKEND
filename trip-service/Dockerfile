@@ -32,4 +32,5 @@ USER appuser
 
 EXPOSE 8082
 
-CMD ["java", "-jar", "app.jar"]
+# CMD ["java", "-jar", "app.jar"]
+CMD ["/bin/sh", "-c", "echo \"Waiting for ${START_SLEEP_SECONDS:-0} seconds before starting...\"; sleep ${START_SLEEP_SECONDS:-0}; exec java -jar app.jar"]

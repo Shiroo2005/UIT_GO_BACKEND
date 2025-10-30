@@ -1,17 +1,43 @@
 services:
-  redis-driver-service:
+  redis-driver-db:
     image: redis:7-alpine
-    container_name: redis-driver-service
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    container_name: redis-driver-db
+    environment:
+      - "REDIS_PASSWORD=${REDIS_PASSWORD}"
+    command:
+      [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--requirepass",
+        "${REDIS_PASSWORD}",
+      ]
     restart: always
     ports:
       - "6379"
     volumes:
       - redis_data:/data
     networks:
-      - microservice_network
-    env_file:
-      - .env
+      - app-network
+
+  driver-service:
+    build: .
+    container_name: driver-service
+    environment:
+      - "DRIVER_SERVICE_ACTIVE_PROFILE=pro"
+      - "REDIS_PASSWORD=${REDIS_PASSWORD}"
+      - "START_SLEEP_SECONDS=30"
+    depends_on:
+      redis-driver-db:
+        condition: service_started
+      discovery-server:
+        condition: service_healthy
+      api-gateway-service:
+        condition: service_healthy
+    ports:
+      - "8083"
+    networks:
+      - app-network
 
 volumes:
   redis_data:

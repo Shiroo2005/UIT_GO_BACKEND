@@ -5,6 +5,7 @@ import com.se360.UIT_Go.driver_service.constants.Topic;
 import com.se360.UIT_Go.driver_service.dto.DriverLocationRequest;
 import com.se360.UIT_Go.driver_service.dto.SearchDriversNearRequest;
 import com.se360.UIT_Go.driver_service.services.driver.IDriverService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class DriverController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/location")
-    public void updateDriverLocation(@RequestHeader("X-User-ID") String userId,
+    public void updateDriverLocation(@Parameter(hidden = true) @RequestHeader("X-User-ID") String userId,
                                      @PathVariable("id") String driverId,
                                      @RequestBody() DriverLocationRequest driverLocationRequest) {
 

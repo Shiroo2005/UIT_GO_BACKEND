@@ -1,0 +1,29 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /driver-service
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  data:
+    redis:
+      host: redis-driver-db
+      port: 6379
+      password: ${REDIS_PASSWORD}
+      database: 0
+  kafka:
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: java.util.HashMap
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+    bootstrap-servers: kafka:29092
+
+app: driver-search-max-count:10
