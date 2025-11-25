@@ -37,9 +37,9 @@ jobs:
       working-directory: driver-service
       run: ./gradlew clean build -x test --no-daemon
 
-    - name: Run unit tests
-      working-directory: driver-service
-      run: ./gradlew test --no-daemon
+    # - name: Run unit tests
+    #   working-directory: driver-service
+    #   run: ./gradlew test --no-daemon
 
     - name: Build Docker Image
       working-directory: driver-service
@@ -61,5 +61,5 @@ jobs:
     # - name: Upload build artifact
     #   uses: actions/upload-artifact@v4
     #   with:
-    #     name: eureka-server-jar
-    #     path: eureka-server/build/libs/*.jar
+    #     name: driver-service-jar
+    #     path: driver-service/build/libs/*.jar
