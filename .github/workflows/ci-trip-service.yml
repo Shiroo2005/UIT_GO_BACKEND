@@ -58,8 +58,8 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.sha }}
 
     # Optional: Upload build artifact
-    # - name: Upload build artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: eureka-server-jar
-    #     path: eureka-server/build/libs/*.jar
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: trip-service-jar
+        path: trip-service/build/libs/*.jar

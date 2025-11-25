@@ -58,8 +58,8 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/user-service:${{ github.sha }}
 
     # Optional: Upload build artifact
-    # - name: Upload build artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: eureka-server-jar
-    #     path: eureka-server/build/libs/*.jar
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: user-service-jar
+        path: user-service/build/libs/*.jar
