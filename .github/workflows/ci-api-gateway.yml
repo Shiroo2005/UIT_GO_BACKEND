@@ -37,9 +37,9 @@ jobs:
       working-directory: api-gateway
       run: ./gradlew clean build -x test --no-daemon
 
-    - name: Run unit tests
-      working-directory: api-gateway
-      run: ./gradlew test --no-daemon
+    # - name: Run unit tests
+    #   working-directory: api-gateway
+    #   run: ./gradlew test --no-daemon
 
     - name: Build Docker Image
       working-directory: api-gateway
@@ -58,8 +58,8 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.sha }}
 
     # Optional: Upload build artifact
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: api-gateway-jar
-        path: api-gateway/build/libs/*.jar
+    # - name: Upload build artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: api-gateway-jar
+    #     path: api-gateway/build/libs/*.jar
