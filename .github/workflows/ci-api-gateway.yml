@@ -63,3 +63,9 @@ jobs:
     #   with:
     #     name: api-gateway-jar
     #     path: api-gateway/build/libs/*.jar
+
+    - name: Upload test report
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-report
+        path: api-gateway/build/reports/tests/test

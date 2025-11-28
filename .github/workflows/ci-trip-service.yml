@@ -57,9 +57,16 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.sha }}
 
-    # Optional: Upload build artifact
-    # - name: Upload build artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: trip-service-jar
-    #     path: trip-service/build/libs/*.jar
+      # Optional: Upload build artifact
+      # - name: Upload build artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: trip-service-jar
+      #     path: trip-service/build/libs/*.jar
+      #
+      
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: trip-service/build/reports/tests/test
