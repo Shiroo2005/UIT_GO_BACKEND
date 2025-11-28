@@ -39,13 +39,7 @@ jobs:
 
     - name: Run unit tests
       working-directory: driver-service
-      run: ./gradlew test --no-daemon || true
-
-    - name: Upload test report
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-report
-        path: driver-service/build/reports/tests/test
+      run: ./gradlew test --no-daemon
 
     - name: Build Docker Image
       working-directory: driver-service
