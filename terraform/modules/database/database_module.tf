@@ -4,12 +4,11 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   location               = var.location
   administrator_login    = var.admin_username
   administrator_password = var.admin_password
-  sku_name               = "B_Standard_B1ms" # Burstable tier (Cost Optimization)
+  sku_name               = "B_Standard_B1ms"
   version                = "8.0.21"
   
-  # For dev/student projects, allow public access to save costs on Private Link
-  # In production, disable this.
-  public_network_access_enabled = true
+  # Note: For v4, keeping public access usually works, but verify if 'public_network_access_enabled' is required in your specific strict policy.
+  # usually it is 'public_network_access_enabled' = true (default) or false.
   
   tags = var.tags
 }
@@ -20,7 +19,6 @@ resource "random_string" "suffix" {
   upper   = false
 }
 
-# Create Databases
 resource "azurerm_mysql_flexible_database" "user_db" {
   name                = "userdb"
   resource_group_name = var.resource_group_name
@@ -37,7 +35,6 @@ resource "azurerm_mysql_flexible_database" "trip_db" {
   collation           = "utf8_unicode_ci"
 }
 
-# Firewall rule to allow Azure Services (App Service) to reach DB
 resource "azurerm_mysql_flexible_server_firewall_rule" "allow_azure" {
   name                = "allow-azure-services"
   resource_group_name = var.resource_group_name

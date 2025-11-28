@@ -11,7 +11,6 @@ resource "azurerm_subnet" "app_subnet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
 
-  # Delegation required for App Service VNet Integration (Optional but recommended)
   delegation {
     name = "app-delegation"
     service_delegation {
