@@ -13,8 +13,10 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-  subscription_id = "00000000-0000-0000-0000-000000000000" # Optional: Replace with your actual Subscription ID if needed
+
+  subscription_id = var.subscription_id
 }
+
 
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
