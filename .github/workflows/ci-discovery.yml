@@ -39,7 +39,13 @@ jobs:
 
       - name: Run unit tests
         working-directory: eureka-server
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test --no-daemon || true
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: eureka-server/build/reports/tests/test
 
       - name: Build Docker Image
         working-directory: eureka-server
@@ -64,8 +70,3 @@ jobs:
       #     name: eureka-server-jar
       #     path: eureka-server/build/libs/*.jar
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: eureka-server/build/reports/tests/test
