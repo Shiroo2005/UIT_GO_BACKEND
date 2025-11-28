@@ -63,3 +63,9 @@ jobs:
     #   with:
     #     name: driver-service-jar
     #     path: driver-service/build/libs/*.jar
+
+    - name: Upload test report
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-report
+        path: driver-service/build/reports/tests/test
