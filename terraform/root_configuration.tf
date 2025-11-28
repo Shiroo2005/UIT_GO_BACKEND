@@ -2,13 +2,18 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0"
+      version = "~> 4.0" # Explicitly targeting version 4.x to match your local tools
     }
   }
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
+  subscription_id = "00000000-0000-0000-0000-000000000000" # Optional: Replace with your actual Subscription ID if needed
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -24,7 +29,7 @@ module "networking" {
   location            = azurerm_resource_group.rg.location
 }
 
-# 2. Database Module (MySQL for User & Trip Service)
+# 2. Database Module
 module "database" {
   source              = "./modules/database"
   resource_group_name = azurerm_resource_group.rg.name
@@ -34,7 +39,7 @@ module "database" {
   tags                = var.tags
 }
 
-# 3. Middleware Module (Redis for Driver & Kafka/EventHubs)
+# 3. Middleware Module (Redis & Kafka/EventHubs)
 module "middleware" {
   source              = "./modules/middleware"
   resource_group_name = azurerm_resource_group.rg.name
@@ -42,16 +47,15 @@ module "middleware" {
   tags                = var.tags
 }
 
-# 4. Compute Module (The 5 Microservices)
-# We use a single module called 5 times to ensure consistency (DRY Principle)
+# 4. Compute Module (App Service Plan & Microservices)
 
-# A shared App Service Plan for Cost Optimization (Module E)
+# Shared Plan for Cost Optimization (Module E)
 resource "azurerm_service_plan" "main_plan" {
   name                = "uit-go-app-plan"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
-  sku_name            = "B1" # Basic tier, low cost
+  sku_name            = "B1" 
   tags                = var.tags
 }
 
@@ -103,13 +107,12 @@ module "service_trip" {
     "SPRING_DATASOURCE_USERNAME" = var.db_admin_username
     "SPRING_DATASOURCE_PASSWORD" = var.db_admin_password
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "https://${module.service_eureka.default_hostname}/eureka/"
-    # Kafka Connection info from Middleware module
     "KAFKA_BOOTSTRAP_SERVERS"    = "${module.middleware.eventhub_namespace_name}.servicebus.windows.net:9093"
     "KAFKA_SASL_JAAS_CONFIG"     = module.middleware.eventhub_connection_string
   }
 }
 
-# 4.4 Driver Service (Uses Redis & Kafka)
+# 4.4 Driver Service
 module "service_driver" {
   source              = "./modules/compute"
   service_name        = "driver-service"
