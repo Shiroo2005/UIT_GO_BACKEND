@@ -39,7 +39,7 @@ jobs:
 
       - name: Run unit tests
         working-directory: user-service
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test --scan --no-daemon
 
       - name: Build Docker Image
         working-directory: user-service
