@@ -7,7 +7,7 @@
 * Đặng Nguyễn Huy Phong-23521159
 * Lê Minh Phát-23521140
 
-[cite_start]**Module chuyên sâu đã chọn:** [Điền tên Module A/B/C/D/E] [cite: 61]
+**Module chuyên sâu đã chọn:** [Điền tên Module A/B/C/D/E]
 
 ## 🛠️ Công nghệ sử dụng
 
@@ -23,7 +23,7 @@
 
 ## 🚀 Hướng dẫn chạy trên Local
 
-[cite_start]Hệ thống có thể được khởi chạy đầy đủ trên môi trường local bằng Docker Compose[cite: 56].
+Hệ thống có thể được khởi chạy đầy đủ trên môi trường local bằng Docker Compose[cite: 56].
 
 1.  **Clone repository:**
    	```bash
@@ -52,8 +52,13 @@ Hệ thống được quản lý hạ tầng bằng Terraform.
 1.  **Cài đặt Terraform:**
     [Link hướng dẫn install terraform](https://developer.hashicorp.com/terraform/install)
 
-2.  **Cấu hình AWS Credentials:**
-    Đảm bảo bạn đã cấu hình AWS CLI với quyền IAM phù hợp.
+2.  **Build và push images lên Docker Hub**
+    Làm từng service
+	```bash
+		docker build -t <dockerhub-username>/<service-name>:latest .
+		docker push <dockerhub-username>/<service-name>:latest
+	```
+
 
 3.  **Triển khai hạ tầng:**
     ```bash
@@ -64,30 +69,5 @@ Hệ thống được quản lý hạ tầng bằng Terraform.
 	```
 	(Lưu ý: Cần cấu hình backend state cho Terraform để làm việc nhóm hiệu quả).
 
-4.  **Triển khai ứng dụng:
-	4.1. Lấy tên ECR Repository URI:** Bạn cần biết địa chỉ (URI) của repository. Bạn có thể lấy nó từ giao diện AWS ECR hoặc dùng lệnh:
-    ```bash
-    	aws ecr describe-repositories --repository-names <your-repo-name> --query "repositories[0].repositoryUri" --output text
-    ```
-    **4.2. Xác thực Docker với ECR:** Bạn cần lấy một token tạm thời từ AWS để Docker có thể đăng nhập vào registry của ECR.
-    ```bash
-    	aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
-    ```
-    **4.3. Build Docker Image:** Từ thư mục gốc của service (nơi có `Dockerfile`), chạy lệnh build.
-    ```bash
-	    # Build image
-		docker build -t <your-repo-name> .
-    ```
-	**4.4. Gắn tag (Tag) cho Image:** Docker cần biết bạn muốn đẩy image này tới repository nào. Bạn phải tag nó với URI bạn đã lấy ở Bước 1. Bạn có thể dùng tag `latest` hoặc một tag cụ thể (ví dụ: mã Git commit) cho việc quản lý phiên bản tốt hơn.
-	```bash
-		# Ví dụ dùng tag 'latest'
-		docker tag <your-repo-name>:latest <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<your-repo-name>:latest
-	
-		# Ví dụ dùng tag cụ thể (khuyến khích)
-		docker tag <your-repo-name>:latest <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<your-repo-name>:v1.0.1
-	```
-	**4.5. Đẩy (Push) Image lên ECR:** Giờ thì đẩy image đã được tag lên registry.
-	```bash
-		docker push <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<your-repo-name>:latest
-	```
-	
+4.  **Triển khai ứng dụng:**
+	Azure sẽ pull các image về và chạy

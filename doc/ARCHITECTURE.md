@@ -5,7 +5,7 @@
 Đây là kiến trúc "Bộ Xương" Microservices (Giai đoạn 1) của hệ thống.
 
 
-*(Sơ đồ này cần thể hiện rõ 3 microservices chính: UserService, TripService, DriverService, cơ sở dữ liệu riêng biệt cho mỗi service, và cách chúng giao tiếp với nhau (qua API Gateway hoặc trực tiếp).*
+*Sơ đồ này cần thể hiện rõ 3 microservices chính: UserService, TripService, DriverService, cơ sở dữ liệu riêng biệt cho mỗi service, và cách chúng giao tiếp với nhau (qua API Gateway hoặc trực tiếp).*
 
 ![Sơ đồ tổng quan](./images/architecture.png)
 ![Sơ đồ database](./images/database.png)

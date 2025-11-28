@@ -5,49 +5,89 @@
 - Tiêu Hoàng Phúc
 - Đặng Nguyễn Huy Phong
 - Lê Minh Phát
-**Module chuyên sâu:** ...
+
+**Module chuyên sâu:** Module E-Design for Automation & Cost Optimization (FinOps)
 
 ## 1. Tổng quan Kiến trúc Hệ thống
 
-Hệ thống UIT-Go được thiết kế theo kiến trúc microservices với 3 services lõi: UserService, TripService, và DriverService. Chúng tôi đã áp dụng nguyên tắc "Database per Service" và đóng gói toàn bộ ứng dụng bằng Docker. Hạ tầng được quản lý bằng Terraform và triển khai trên AWS.
+Hệ thống UIT-Go được thiết kế và triển khai dựa trên kiến trúc Microservices, đảm bảo tính phân tán, khả năng mở rộng độc lập và khả năng bảo trì cao. Hệ sinh thái bao gồm 5 services cốt lõi giao tiếp với nhau thông qua RESTful API và Apache Kafka cho các tác vụ bất đồng bộ.
 
 (Xem chi tiết tại `docs/ARCHITECTURE.md`)
+### 1.1. Tech Stack & Infrastructure
+* **Service Discovery**: Netflix Eureka Server.
+* **API Gateway**: Gateway Service (đóng vai trò entry-point, routing và load balancing cơ bản).
+* **Core Services**:
+    * **User Service**: Quản lý định danh và hồ sơ (Database: MySQL).
+    * **Trip Service**: Quản lý vòng đời chuyến đi (Database: MySQL).
+    * **Driver Service**: Quản lý vị trí và tìm kiếm tài xế (Database: Redis với Geospatial index).
+* **Message Broker**: Apache Kafka (xử lý matching chuyến đi và log tracking).
+* **Containerization & Orchestration**: Docker & Docker Compose.
+* **Image Registry**: Docker Hub.
+* **Cloud Provider**: Microsoft Azure.
+* **IaC (Infrastructure as Code)**: Terraform.
+## 2. Phân tích Module Chuyên sâu (Module E: Automation & Cost Optimization)
+Với vai trò Platform & FinOps Engineer, nhóm tập trung vào việc tự động hóa quy trình phát triển và tối ưu hóa chi phí vận hành trên nền tảng đám mây Azure.
 
-## 2. Phân tích Module Chuyên sâu: <Tên Module>
+### 2.1. Tự động hóa (Automation & CI/CD)
+Chúng tôi đã xây dựng nền tảng "Self-Service" giúp giảm thiểu thời gian triển khai (Lead Time for Changes) và giảm rủi ro lỗi con người.
+* **Pipeline Architecture: Sử dụng GitHub Actions**.
+    * **CI (Continuous Integration)**: Tự động kích hoạt khi có Pull Request. Pipeline thực hiện Unit Test, Build Docker Image và đẩy (Push) image lên Docker Hub.
+    * **CD (Continuous Deployment)**: Sử dụng Terraform để provision hạ tầng trên Azure (Azure Virtual Machines, VNet, Azure Database for MySQL). Sau đó, script tự động SSH vào VM để pull image mới nhất từ Docker Hub và khởi động lại container.
+* **Infrastructure as Code (IaC)**: Toàn bộ hạ tầng (Resource Group, Network Security Groups, VM Size) được định nghĩa bằng Terraform, giúp quản lý trạng thái hạ tầng (State Management) minh bạch và nhất quán.
 
-Phần này mô tả cách tiếp cận và kết quả đạt được cho module chuyên sâu.
+### 2.2. Tối ưu hóa Chi phí (Cost Optimization/FinOps)
+Thay vì sử dụng các dịch vụ Managed Kubernetes (như AKS) đắt đỏ cho quy mô dự án hiện tại, nhóm đã áp dụng chiến lược "Right-Sizing" và lựa chọn kiến trúc phù hợp với ngân sách.
+* **Phân tích chi phí (Cost Analysis)**:
+    * Sử dụng Azure Cost Management để theo dõi burn-rate hàng ngày.
+    * Thiết lập Azure Budgets để cảnh báo khi chi phí vượt ngưỡng cho phép (Alerting).
+* **Chiến lược tối ưu**:
+    * **Compute**: Sử dụng Azure B-Series (Burstable) Virtual Machines thay vì D-Series. Dòng B-Series (ví dụ Standard_B2s) cho phép tích lũy tín dụng CPU khi nhàn rỗi và "burst" lên 100% khi tải cao, phù hợp với đặc thù traffic không đều của môi trường dev/testing, giúp tiết kiệm ~40% chi phí compute.
+    * **Storage**: Sử dụng Local SSD của VM cho Redis (Cache) thay vì Azure Redis Cache (Managed Service) để tiết kiệm chi phí, chấp nhận trade-off về tính bền vững dữ liệu cache (do Redis chỉ dùng để tìm kiếm tài xế realtime).
+    * **Data Transfer**: Tối ưu hóa region, đặt toàn bộ resource cùng một Region (Southeast Asia) để miễn phí băng thông nội bộ (Data Transfer In/Out between Azure services).
 
-*(Nội dung tùy thuộc vào module, ví dụ:*
-* *Module A: Trình bày kết quả load testing (k6) trước và sau khi tối ưu, biểu đồ p95 latency, giải thích về các điểm nghẽn cổ chai đã tìm thấy.*
-* *Module B: Trình bày kết quả thực hành Chaos Engineering (ví dụ: tắt 1 AZ), RTO/RPO tính toán được và kết quả thực tế khi DR.*
-* *Module C: Trình bày kết quả của Threat Modeling (dùng STRIDE), các lỗ hổng đã xác định và giải pháp, cấu hình Security Group/IAM Role.*
-* *Module D: Trình bày Dashboard SLO/SLI (tỷ lệ lỗi, p95 latency), hình ảnh trace request bằng X-Ray qua nhiều service.*
-* Module E: Trình bày phân tích chi phí từ Cost Explorer, hiệu quả của giải pháp tối ưu (ví dụ: dùng Spot Instance tiết kiệm X%), sơ đồ pipeline CI/CD.*
-*)*
+## 3. Tổng hợp Các Quyết định Thiết kế và Trade-off
+Đây là phần cốt lõi, giải thích lý do lựa chọn công nghệ và những sự đánh đổi để đạt được mục tiêu nghiệp vụ.
+#### Quyết định 1: Sử dụng Docker Hub & Azure VMs thay vì Kubernetes (AKS)
+* **Bối cảnh**: Team cần triển khai hệ thống microservices nhưng nhân sự vận hành (Ops) hạn chế và ngân sách thấp.
+* **Lựa chọn**: Triển khai Container trực tiếp trên Azure Virtual Machines (VM) và dùng Docker Hub làm Registry.
+* **Trade-off (Đánh đổi)**:
+    * **Ưu điểm**: Tiết kiệm đáng kể chi phí (loại bỏ chi phí Cluster Management của K8s). Đơn giản hóa quá trình vận hành (không cần quản lý Pods, Deployments phức tạp).
+    * **Nhược điểm**: Mất đi các tính năng tự động mạnh mẽ của K8s như Self-healing (tự khởi động lại pod chết), Auto-scaling (HPA) và Rolling Updates mượt mà. Phải xử lý thủ công việc cân bằng tải giữa các node nếu mở rộng.
 
-## 3. Tổng hợp Các Quyết định Thiết kế và Trade-off (Quan trọng nhất)
+#### Quyết định 2: Sử dụng Redis (Geospatial) cho Driver Service
+* **Bối cảnh**: Yêu cầu nghiệp vụ (User Story 3) đòi hỏi truy vấn tìm "tài xế gần nhất" trong bán kính R với độ trễ cực thấp (sub-millisecond latency).
+* **Lựa chọn**: Redis (In-memory data structure store).
+* **Trade-off**:
+    * **Ưu điểm (Performance)**: Tốc độ truy xuất cực nhanh so với truy vấn không gian trên MySQL hay PostgreSQL.
+    * **Nhược điểm (Reliability)**: Dữ liệu nằm trên RAM. Nếu instance Redis bị restart mà không cấu hình AOF/RDB persistence kỹ, dữ liệu vị trí tài xế sẽ bị mất. Tuy nhiên, vị trí tài xế là dữ liệu ephemeral (thay đổi liên tục), việc mất mát trong vài giây là chấp nhận được.
 
-Đây là phần cốt lõi của báo cáo, tổng hợp các quyết định kỹ thuật quan trọng nhất (từ các ADR) và các đánh đổi đã thực hiện.
+#### Quyết định 3: Giao tiếp bất đồng bộ (Asynchronous) qua Kafka cho Booking Flow
+* **Bối cảnh**: Khi User đặt chuyến, hệ thống cần thông báo cho tài xế và ghi nhận lịch sử. Việc xử lý đồng bộ (gọi API nối tiếp) có thể gây nghẽn (blocking) TripService nếu DriverService phản hồi chậm.
+* **Lựa chọn**: Apache Kafka làm Message Broker. TripService đẩy event TRIP_CREATED vào topic.
+* **Trade-off**:
+    * **Ưu điểm (Decoupling)**: User/Trip Service không bị phụ thuộc vào tốc độ xử lý của các service phía sau. Tăng khả năng chịu tải (High Throughput).
+    * **Nhược điểm (Complexity)**: Tăng độ phức tạp của hệ thống (phải quản lý Kafka Cluster, Zookeeper). Phải xử lý vấn đề "Eventual Consistency" (Tính nhất quán cuối cùng) thay vì nhất quán tức thì.
 
-### Quyết định 1: [Tên quyết định, ví dụ: Giao tiếp nội bộ bằng REST thay vì gRPC]
-* **Bối cảnh:** Cần giao tiếp hiệu năng cao giữa các service nội bộ.
-* **Lựa chọn:** Sử dụng gRPC.
-* **Trade-off:** Chấp nhận độ phức tạp khi cài đặt (file .proto, sinh code) và khó gỡ lỗi hơn (cần công cụ riêng) để đổi lấy hiệu năng cao, tối ưu băng thông và giảm độ trễ.
+#### Quyết định 4: Database per Service (MySQL phân tán)
+* **Bối cảnh**: User Service và Trip Service có domain data riêng biệt.
+* **Lựa chọn**: Mỗi service sở hữu một database MySQL riêng (Logical separation).
+* **Trade-off**:
+    * **Ưu điểm**: Service này không thể làm sập database của service kia. Dễ dàng thay đổi schema mà không ảnh hưởng toàn hệ thống.
+    * **Nhược điểm**: Không thể thực hiện JOIN bảng giữa User và Trip. Phải thực hiện Aggregation ở tầng Application hoặc API Gateway, gây phức tạp khi cần lấy dữ liệu tổng hợp.
 
-### Quyết định 2: [Tên quyết định, ví dụ: Dùng Redis (Speed-first) cho DriverService]
-* **Bối cảnh:** Yêu cầu nghiệp vụ cần tìm tài xế gần nhất với độ trễ cực thấp (User Story 3 của Tài xế).
-* Lựa chọn:** Dùng Redis ElastiCache với tính năng Geospatial.
-* **Trade-off:** Chúng tôi ưu tiên tốc độ (Performance) và chấp nhận chi phí vận hành có thể cao hơn và dữ liệu chỉ lưu trong bộ nhớ, thay vì chọn giải pháp tối ưu về chi phí/khả năng mở rộng (Cost/Scale) như DynamoDB + Geohashing.
-
-### Quyết định 3: [Dành riêng cho module chuyên sâu]
-* **Bối cảnh:** Mô tả vấn đề của module chuyên sâu].
-* **Lựa chọn:** Giải pháp đã chọn, ví dụ: Dùng SQS cho Module A.
-* **Trade-off:** Phân tích đánh đổi, ví dụ: Chấp nhận độ trễ tăng nhẹ (Availability) để đổi lấy khả năng chịu tải đột biến (Reliability) và hệ thống không bị sập.
-
-## 4. Thách thức & Bài học kinh nghiệm
-
-[Mô tả các khó khăn kỹ thuật lớn nhất nhóm đã gặp và bài học rút ra[cite: 140]. Ví dụ: Cấu hình Terraform cho VPC, quản lý state, debug lỗi mạng giữa các service, ....
+## 4. Thách thức & Bài học Kinh nghiệm
+Trong quá trình thực hiện Module E và chuyển đổi hạ tầng sang Azure, nhóm đã gặp các thách thức:
+1. **Cấu hình Network Security Groups (NSG) trên Azure**: Việc mở port cho Eureka Discovery và giao tiếp giữa các container Docker trên các VM khác nhau gặp nhiều khó khăn ban đầu, dẫn đến lỗi "Connection Refused".
+    * **Giải pháp**: Sử dụng Azure Private VNet cho giao tiếp nội bộ và chỉ mở port 80/443 ra public thông qua Gateway.
+2. **Quản lý biến môi trường (Environment Variables)**: Khi số lượng service tăng lên, việc quản lý file .env cho Docker Compose trở nên rối rắm.
+    * **Giải pháp**: Tích hợp GitHub Secrets để inject biến môi trường an toàn vào pipeline CI/CD.
 
 ## 5. Kết quả & Hướng phát triển
+### Kết quả:
+* Hệ thống backend hoàn chỉnh với 5 microservices hoạt động ổn định trên Azure.
+* Pipeline CI/CD tự động hóa 100% từ code commit đến deploy.
+* Chi phí vận hành được tối ưu hóa giảm ~30% so với dự toán ban đầu nhờ chọn đúng loại VM và Region.
 
-[Tóm tắt kết quả đạt được và các đề xuất cải tiến trong tương lai[cite: 141]. Ví dụ: hệ thống đã đáp ứng được...; hướng phát triển: thêm service thanh toán, áp dụng Service Mesh, ...].
+### Hướng phát triển:
+* Nâng cấp từ Docker trên VM sang Azure Container Apps (Serverless Containers) để tận dụng khả năng scale-to-zero khi không có traffic, tối ưu chi phí hơn nữa.
+* Triển khai ELK Stack (Elasticsearch, Logstash, Kibana) để thay thế việc xem log thủ công.
