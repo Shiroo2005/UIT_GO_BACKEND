@@ -37,9 +37,9 @@ jobs:
       working-directory: driver-service
       run: ./gradlew clean build -x test --no-daemon
 
-    # - name: Run unit tests
-    #   working-directory: driver-service
-    #   run: ./gradlew test --no-daemon
+    - name: Run unit tests
+      working-directory: driver-service
+      run: ./gradlew test --no-daemon
 
     - name: Build Docker Image
       working-directory: driver-service

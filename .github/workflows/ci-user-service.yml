@@ -37,9 +37,9 @@ jobs:
       working-directory: user-service
       run: ./gradlew clean build -x test --no-daemon
 
-    # - name: Run unit tests
-    #   working-directory: user-service
-    #   run: ./gradlew test --no-daemon
+    - name: Run unit tests
+      working-directory: user-service
+      run: ./gradlew test --no-daemon
 
     - name: Build Docker Image
       working-directory: user-service
