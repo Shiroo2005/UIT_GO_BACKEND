@@ -11,11 +11,10 @@ resource "azurerm_consumption_budget_resource_group" "project_budget" {
   amount     = 50 # Limit to $50 USD per month for the student project
   time_grain = "Monthly"
 
-  time_period {
-    start_date = "2024-01-01T00:00:00Z" # Adjust as needed
-    end_date   = "2025-01-01T00:00:00Z"
+ time_period {
+    start_date = "2025-12-01T00:00:00Z" # Bắt đầu từ tháng 12 hiện tại
+    end_date   = "2026-12-01T00:00:00Z"  # Kết thúc một năm sau
   }
-
   notification {
     enabled        = true
     threshold      = 80.0 # Alert at 80% usage
