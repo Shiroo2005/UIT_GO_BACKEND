@@ -37,7 +37,26 @@ jobs:
         working-directory: terraform
 
       # -----------------------------
-      # 3. Terraform Plan
+      # 3. Import Resource Group nếu đã tồn tại
+      # -----------------------------
+      - name: Import Resource Group if exists
+        run: |
+          RG_NAME="uit-go-rg"
+          if az group exists -n "$RG_NAME"; then
+            echo "Resource Group exists. Importing..."
+            terraform import azurerm_resource_group.rg "/subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/$RG_NAME" || true
+          else
+            echo "Resource group does not exist. Skipping import."
+          fi
+        working-directory: terraform
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      # -----------------------------
+      # 4. Terraform Plan
       # -----------------------------
       - name: Terraform Plan
         run: terraform plan -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" -out=tfplan.bin
@@ -48,7 +67,7 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       # -----------------------------
-      # 4. Terraform Apply
+      # 5. Terraform Apply
       # -----------------------------
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan.bin
