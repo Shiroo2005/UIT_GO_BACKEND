@@ -145,7 +145,7 @@ module "service_gateway" {
   docker_tag          = "latest"
 
   app_settings = {
-    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "https://${module.service_eureka.default_hostname}/eureka/"
+    "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "https://${module.service_eureka.app_url}/eureka/"
     "SERVER_PORT" = "8080"
   }
 }
