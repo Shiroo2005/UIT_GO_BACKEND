@@ -40,10 +40,7 @@ jobs:
       # 3. Terraform Plan
       # -----------------------------
       - name: Terraform Plan
-        run: terraform plan \
-          -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" \
-          -out=tfplan.bin
+        run: terraform plan -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" -out=tfplan.bin
         working-directory: terraform
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
