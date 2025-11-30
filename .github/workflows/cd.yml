@@ -1,4 +1,5 @@
 name: Deploy Terraform to Azure
+
 on:
   push:
     branches:
@@ -16,6 +17,9 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # -----------------------------
+      # 1. Terraform Init
+      # -----------------------------
       - name: Terraform Init
         run: terraform init
         working-directory: terraform
@@ -25,39 +29,32 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
+      # -----------------------------
+      # 2. Terraform Validate
+      # -----------------------------
       - name: Terraform Validate
         run: terraform validate
         working-directory: terraform
 
+      # -----------------------------
+      # 3. Terraform Plan
+      # -----------------------------
       - name: Terraform Plan
-        run: terraform plan -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}"
+        run: terraform plan \
+          -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+          -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" \
+          -out=tfplan.bin
         working-directory: terraform
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Import Resource Group if exists
-        run: |
-          RG_NAME=$(terraform output -raw resource_group_name || echo "uit-go-rg")
-
-          az group exists -n "$RG_NAME"
-          if [ $? -eq 0 ]; then
-            echo "Resource Group exists. Importing..."
-            terraform import azurerm_resource_group.rg "/subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/$RG_NAME" || true
-          else
-            echo "Resource group does not exist. Skipping import."
-          fi
-        working-directory: terraform
-        env:
-          AZURE_DEVOPS_EXT_PAT: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
+      # -----------------------------
+      # 4. Terraform Apply
+      # -----------------------------
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}"
+        run: terraform apply -auto-approve tfplan.bin
         working-directory: terraform
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
