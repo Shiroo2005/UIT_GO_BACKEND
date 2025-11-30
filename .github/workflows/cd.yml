@@ -1,83 +1,35 @@
-name: Deploy Terraform to Azure
+name: Deploy Terraform
 
 on:
   push:
     branches:
       - main
-      - test/CD
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v3
 
-      - name: Azure CLI Login
+      - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # -----------------------------
-      # 1. Terraform Init
-      # -----------------------------
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -input=false
         working-directory: terraform
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      # -----------------------------
-      # 2. Terraform Validate
-      # -----------------------------
       - name: Terraform Validate
         run: terraform validate
         working-directory: terraform
 
-      # -----------------------------
-      # 3. Import Resource Group nếu đã tồn tại
-      # -----------------------------
-      - name: Import Resource Group if exists
-        run: |
-          RG_NAME="uit-go-rg"
-          if az group exists -n "$RG_NAME"; then
-            echo "Resource Group exists. Importing..."
-            terraform import azurerm_resource_group.rg "/subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/resourceGroups/$RG_NAME" || true
-          else
-            echo "Resource group does not exist. Skipping import."
-          fi
-        working-directory: terraform
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
-      # -----------------------------
-      # 4. Terraform Plan
-      # -----------------------------
       - name: Terraform Plan
-        run: terraform plan -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" -out=tfplan.bin
+        run: terraform plan -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}" -out=tfplan.bin
         working-directory: terraform
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-      # -----------------------------
-      # 5. Terraform Apply
-      # -----------------------------
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan.bin
         working-directory: terraform
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
