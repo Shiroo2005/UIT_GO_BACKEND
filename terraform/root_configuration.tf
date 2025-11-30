@@ -4,7 +4,14 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.0" # Explicitly targeting version 4.x to match your local tools
     }
+
+    time = {
+      source  = "hashicorp/time"
+      version = "~> 0.9.1" # Dùng phiên bản mới nhất
+    }
   }
+
+  
 }
 
 provider "azurerm" {
