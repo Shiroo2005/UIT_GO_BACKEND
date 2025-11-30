@@ -28,18 +28,14 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan \
-          -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}"
+        run: terraform plan -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}"
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve \
-          -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}"
+        run: terraform apply -auto-approve -var "subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" -var "db_admin_password=${{ secrets.DB_ADMIN_PASSWORD }}"
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
