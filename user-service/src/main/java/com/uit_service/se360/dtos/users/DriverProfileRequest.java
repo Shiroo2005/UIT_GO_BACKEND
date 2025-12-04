@@ -7,9 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DriverProfileRequest {
-  @NotBlank private String licensePlate;
 
-  @NotBlank private String vehicleModel;
+    @NotBlank(message = "License plate must not be blank")
+    private String licensePlate;
 
-  @NotBlank private String vehicleColor;
+    @NotBlank(message = "Vehicle model must not be blank")
+    private String vehicleModel;
+
+    @NotBlank(message = "Vehicle color must not be blank")
+    private String vehicleColor;
 }
