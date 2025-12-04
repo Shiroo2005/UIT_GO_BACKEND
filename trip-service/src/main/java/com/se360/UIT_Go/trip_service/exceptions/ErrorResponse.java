@@ -1,4 +1,4 @@
-package com.uit_service.se360.exceptions;
+package com.se360.UIT_Go.trip_service.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;
