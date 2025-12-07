@@ -3,8 +3,11 @@ name: CD - User Service
 on:
   workflow_run:
     workflows: ["CI - User Service"]
-    types: [completed]
-
+    types:
+      - completed
+    branches:
+      - test/CD
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest

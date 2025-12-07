@@ -5,7 +5,11 @@ name: CD - API Gateway
 on:
   workflow_run:
     workflows: ["CI - API Gateway"]
-    types: [completed]
+    types:
+      - completed
+    branches:
+      - test/CD
+      - main
 
 jobs:
   deploy:

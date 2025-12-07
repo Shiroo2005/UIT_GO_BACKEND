@@ -3,7 +3,11 @@ name: CD - Driver Service
 on:
   workflow_run:
     workflows: ["CI - Driver Service"]
-    types: [completed]
+    types:
+      - completed
+    branches:
+      - test/CD
+      - main
 
 jobs:
   deploy:
