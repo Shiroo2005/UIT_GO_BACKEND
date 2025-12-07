@@ -20,8 +20,8 @@ resource "azurerm_consumption_budget_resource_group" "project_budget" {
 
   # Dùng formatdate vì Azure yêu cầu format: YYYY-MM-DDTHH:MM:SSZ
   time_period {
-    start_date = formatdate("2006-01-02T00:00:00Z", time_static.now.rfc3339)
-    end_date   = formatdate("2006-01-02T00:00:00Z", time_offset.one_year_later.rfc3339)
+    start_date = formatdate("YYYY-MM-DD", time_static.now.rfc3339)
+    end_date   = formatdate("YYYY-MM-DD", time_offset.one_year_later.rfc3339)
   }
 
   # Cảnh báo 80%

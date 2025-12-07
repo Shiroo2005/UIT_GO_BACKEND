@@ -64,3 +64,4 @@ jobs:
       #   with:
       #     name: trip-service-jar
       #     path: trip-service/build/libs/*.jar
+

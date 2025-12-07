@@ -4,15 +4,17 @@ resource "azurerm_linux_web_app" "app" {
   location            = var.location
   service_plan_id     = var.service_plan_id
 
-  site_config {
-    always_on = true
+  # site_config {
+  #   always_on = true
+  #
+  #   application_stack {
+  #     docker_image_name = var.docker_image
+  #     docker_registry_url = "https://index.docker.io"
+  #   }
+  #
+  # }
 
-    application_stack {
-      docker_image_name = var.docker_image
-      docker_registry_url = "https://index.docker.io"
-    }
-
-  }
+  site_config {}
 
   app_settings = merge(
     {
