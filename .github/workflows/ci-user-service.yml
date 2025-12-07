@@ -79,7 +79,60 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "uit-go-trip-service"
+          app-name: "uit-go-6:00:26.128723Z 2025-12-07T06:00:25.898Z  INFO 1 --- [api-gateway] [           main] c.s.U.api_gateway.ApiGatewayApplication  : Starting ApiGatewayApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by appuser in /app)
+2025-12-07T06:00:26.1708357Z 2025-12-07T06:00:26.170Z  INFO 1 --- [api-gateway] [           main] c.s.U.api_gateway.ApiGatewayApplication  : The following 2 profiles are active: "dev", "imp"
+2025-12-07T06:01:41.9050143Z 2025-12-07T06:01:41.895Z  INFO 1 --- [api-gateway] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=141b10ae-dc91-3120-ba61-f387c6979058
+2025-12-07T06:01:54.3606863Z 2025-12-07T06:01:54.359Z  WARN 1 --- [api-gateway] [           main] onfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'securityConfig': Injection of autowired dependencies failed
+2025-12-07T06:01:54.6794375Z 2025-12-07T06:01:54.678Z  INFO 1 --- [api-gateway] [           main] .s.b.a.l.ConditionEvaluationReportLogger :
+2025-12-07T06:01:54.6795091Z
+2025-12-07T06:01:54.6795153Z Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-07T06:01:55.0708246Z 2025-12-07T06:01:54.992Z ERROR 1 --- [api-gateway] [           main] o.s.boot.SpringApplication               : Application run failed
+2025-12-07T06:01:55.0709117Z
+2025-12-07T06:01:55.0709177Z org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'securityConfig': Injection of autowired dependencies failed
+2025-12-07T06:01:55.0709216Z 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:515) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709252Z 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1459) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709286Z 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709354Z 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709389Z 	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709423Z 	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709481Z 	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.070954Z 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709576Z 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1228) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709609Z 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1194) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709643Z 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1130) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709705Z 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:990) ~[spring-context-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709739Z 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0709773Z 	at org.springframework.boot.web.reactive.context.ReactiveWebServerApplicationContext.refresh(ReactiveWebServerApplicationContext.java:66) ~[spring-boot-3.5.7.jar!/:3.5.7]
+2025-12-07T06:01:55.0709806Z 	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.7.jar!/:3.5.7]
+2025-12-07T06:01:55.0709838Z 	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.7.jar!/:3.5.7]
+2025-12-07T06:01:55.0709896Z 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.7.jar!/:3.5.7]
+2025-12-07T06:01:55.0709929Z 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.7.jar!/:3.5.7]
+2025-12-07T06:01:55.0709959Z 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.7.jar!/:3.5.7]
+2025-12-07T06:01:55.070999Z 	at com.se360.UIT_Go.api_gateway.ApiGatewayApplication.main(ApiGatewayApplication.java:12) ~[!/:0.0.1-SNAPSHOT]
+2025-12-07T06:01:55.0710021Z 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+2025-12-07T06:01:55.0710078Z 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+2025-12-07T06:01:55.0710109Z 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+2025-12-07T06:01:55.0710138Z 	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+2025-12-07T06:01:55.071017Z 	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:106) ~[app.jar:0.0.1-SNAPSHOT]
+2025-12-07T06:01:55.0710201Z 	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+2025-12-07T06:01:55.0710232Z 	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+2025-12-07T06:01:55.0710636Z Caused by: org.springframework.util.PlaceholderResolutionException: Could not resolve placeholder 'jwt.public-key' in value "${jwt.public-key}"
+2025-12-07T06:01:55.0710683Z 	at org.springframework.util.PlaceholderResolutionException.withValue(PlaceholderResolutionException.java:81) ~[spring-core-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710723Z 	at org.springframework.util.PlaceholderParser$ParsedValue.resolve(PlaceholderParser.java:298) ~[spring-core-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710789Z 	at org.springframework.util.PlaceholderParser.replacePlaceholders(PlaceholderParser.java:131) ~[spring-core-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710823Z 	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:114) ~[spring-core-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710856Z 	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:293) ~[spring-core-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710889Z 	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:264) ~[spring-core-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710923Z 	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:186) ~[spring-context-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0710982Z 	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:970) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0711016Z 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1675) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0711049Z 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1653) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0711084Z 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.071115Z 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0711183Z 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0711217Z 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509) ~[spring-beans-6.2.12.jar!/:6.2.12]
+2025-12-07T06:01:55.0711245Z 	... 26 common frames omitted
+2025-12-07T06:01:55.0711271Ztrip-service"
           images: "${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.event.workflow_run.head_sha }}"
 
 

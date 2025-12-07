@@ -80,7 +80,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: "uit-go-trip-service"
-          images: "${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.event.workflow_run.head_sha }}"
+          images: "${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.sha }}"
 
 
 

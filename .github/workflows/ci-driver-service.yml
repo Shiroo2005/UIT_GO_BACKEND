@@ -86,7 +86,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: "uit-go-driver-service"
-          images: "${{ secrets.DOCKER_USERNAME }}/driver-service:${{ github.event.workflow_run.head_sha }}"
+          images: "${{ secrets.DOCKER_USERNAME }}/driver-service:${{ github.sha }}"
 
 
 

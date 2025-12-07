@@ -83,4 +83,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: "uit-go-eureka-server"
-          images: "${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.event.workflow_run.head_sha }}"
+          images: "${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.sha}}"
