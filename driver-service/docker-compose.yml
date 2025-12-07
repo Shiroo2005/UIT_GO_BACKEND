@@ -25,17 +25,21 @@ services:
     container_name: driver-service
     environment:
       - "DRIVER_SERVICE_ACTIVE_PROFILE=pro"
-      - "REDIS_PASSWORD=${REDIS_PASSWORD}"
+      - "REDIS_PASSWORD=${REDIS_PASSWORD:-password}"
       - "START_SLEEP_SECONDS=30"
     depends_on:
       redis-driver-db:
         condition: service_started
       discovery-server:
         condition: service_healthy
-      api-gateway-service:
-        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8083/driver-service/actuator/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 15s
     ports:
-      - "8083"
+      - "8083:8083"
     networks:
       - app-network
 

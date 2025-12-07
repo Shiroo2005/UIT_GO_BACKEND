@@ -1,6 +1,6 @@
-package com.uit_service.se360.exceptions;
+package com.se360.UIT_Go.trip_service.exceptions;
 
-import com.uit_service.se360.dtos.ApiResponse;
+import com.se360.UIT_Go.trip_service.dtos.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,7 +31,6 @@ public class GlobalHandlerException {
                         FieldError::getDefaultMessage,
                         (existing, other) -> existing
                 ));
-
         response.setCode(ErrorCode.VALIDATION_ERROR.getCode());
         response.setMessage(ErrorCode.VALIDATION_ERROR.getMessage());
         response.setErrors(fieldErrors);

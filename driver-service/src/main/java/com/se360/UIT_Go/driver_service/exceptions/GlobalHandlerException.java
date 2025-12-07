@@ -1,28 +1,29 @@
-package com.uit_service.se360.exceptions;
+package com.se360.UIT_Go.driver_service.exceptions;
 
-import com.uit_service.se360.dtos.ApiResponse;
+import com.se360.UIT_Go.driver_service.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalHandlerException {
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleUncatchException(Exception ex) {
-    ErrorResponse errorResponse = new ErrorResponse();
-    errorResponse.setMessage(ex.getMessage());
-    return ResponseEntity.internalServerError().body(errorResponse);
-  }
+    // Xử lý các exception chung
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUncaughtException(Exception ex) {
+        var errorResponse = new ErrorResponse();
+        errorResponse.setMessage(ex.getMessage());
+        return ResponseEntity.internalServerError().body(errorResponse);
+    }
 
+    // Xử lý validation exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidationException(
             MethodArgumentNotValidException ex) {
-        ApiResponse<Void> response = new ApiResponse<>();
+
         var fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -32,10 +33,15 @@ public class GlobalHandlerException {
                         (existing, other) -> existing
                 ));
 
+
+        var response = new ApiResponse<Void>();
         response.setCode(ErrorCode.VALIDATION_ERROR.getCode());
         response.setMessage(ErrorCode.VALIDATION_ERROR.getMessage());
         response.setErrors(fieldErrors);
-        return ResponseEntity.status(ErrorCode.VALIDATION_ERROR.getHttpCode()).body(response);
+
+        return ResponseEntity
+                .status(ErrorCode.VALIDATION_ERROR.getHttpCode())
+                .body(response);
     }
 
 }

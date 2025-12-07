@@ -15,28 +15,30 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
-  @Bean
-  PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  SecurityFilterChain filterChain(HttpSecurity http, CustomJwtConverter jwtConverter)
-      throws Exception {
-    http.csrf(AbstractHttpConfigurer::disable)
-        .cors(Customizer.withDefaults())
-        .oauth2ResourceServer(
-            oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)))
-        .authorizeHttpRequests(
-            auth ->
-                auth.requestMatchers(SecurityConstant.PUBLIC_URLS)
-                    .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/users")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated())
-        .formLogin(AbstractHttpConfigurer::disable)
-        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-    return http.build();
-  }
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http, CustomJwtConverter jwtConverter)
+            throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .oauth2ResourceServer(
+                        oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)))
+                .authorizeHttpRequests(
+                        auth ->
+                                auth.requestMatchers(SecurityConstant.PUBLIC_URLS)
+                                        .permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/users")
+                                        .permitAll()
+                                        .requestMatchers("/actuator/health").permitAll()
+                                        .requestMatchers("/actuator/health/**").permitAll()
+                                        .anyRequest()
+                                        .authenticated())
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return http.build();
+    }
 }
