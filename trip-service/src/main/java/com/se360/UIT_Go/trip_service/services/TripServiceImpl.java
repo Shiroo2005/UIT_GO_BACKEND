@@ -82,6 +82,7 @@ public class TripServiceImpl implements TripService {
         }
         trip.setDriverId(userId);
         trip.setStatus(TripStatus.ONGOING);
+        trip = tripRepository.save(trip);
         return tripMapper.entityToResponse(trip);
     }
 
