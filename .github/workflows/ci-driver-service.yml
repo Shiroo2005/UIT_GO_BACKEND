@@ -71,6 +71,22 @@ jobs:
       with:
         name: test-report
         path: driver-service/build/reports/tests/test
+  deploy:
+    needs: build-test-docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/test/CD'
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "uit-go-driver-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/driver-service:${{ github.event.workflow_run.head_sha }}"
 
 
 

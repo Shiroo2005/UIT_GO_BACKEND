@@ -65,6 +65,22 @@ jobs:
       #   with:
       #     name: trip-service-jar
       #     path: trip-service/build/libs/*.jar
+  deploy:
+    needs: build-test-docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/test/CD'
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "uit-go-trip-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.event.workflow_run.head_sha }}"
 
 
 
