@@ -54,7 +54,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push Docker Image
-      working-directory: eureka-server
+      working-directory: api-gateway
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.sha }}
 

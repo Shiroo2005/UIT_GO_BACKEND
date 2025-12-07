@@ -1,3 +1,5 @@
+# File: cd-api-gateway.yml
+
 name: CD - API Gateway
 
 on:
@@ -8,6 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
 
     steps:
       - name: Azure Login
@@ -19,4 +22,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: "uit-go-gateway-service"
+          # Lấy SHA của commit đã kích hoạt workflow CI
           images: "${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.event.workflow_run.head_sha }}"
