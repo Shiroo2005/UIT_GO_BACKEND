@@ -30,7 +30,7 @@ resource "azurerm_consumption_budget_resource_group" "project_budget" {
     threshold      = 80.0
     operator       = "EqualTo"
     threshold_type = "Actual"
-    contact_emails = ["your_actual_email@example.com"]
+    contact_emails = ["23521220@gm.uit.edu.com"]
   }
 
   # Cảnh báo 100%

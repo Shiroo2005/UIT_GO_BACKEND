@@ -76,8 +76,8 @@ module "service_eureka" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.main_plan.id
   docker_image        = "${var.docker_hub_user}/eureka-server"
-  docker_tag          = "latest"
-  
+  port = 8761
+
   app_settings = {
     "SERVER_PORT" = "8761"
   }
@@ -91,7 +91,7 @@ module "service_user" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.main_plan.id
   docker_image        = "${var.docker_hub_user}/user-service"
-  docker_tag          = "latest"
+  port = 8081
 
   app_settings = {
     "SPRING_DATASOURCE_URL"      = "jdbc:mysql://${module.database.server_fqdn}:3306/userdb?useSSL=true&requireSSL=false"
@@ -109,7 +109,8 @@ module "service_trip" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.main_plan.id
   docker_image        = "${var.docker_hub_user}/trip-service"
-  docker_tag          = "latest"
+  port = 8082
+
 
   app_settings = {
     "SPRING_DATASOURCE_URL"      = "jdbc:mysql://${module.database.server_fqdn}:3306/tripdb?useSSL=true&requireSSL=false"
@@ -129,7 +130,7 @@ module "service_driver" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.main_plan.id
   docker_image        = "${var.docker_hub_user}/driver-service"
-  docker_tag          = "latest"
+  port = 8083
 
   app_settings = {
     "SPRING_REDIS_HOST"          = module.middleware.redis_hostname
@@ -149,7 +150,7 @@ module "service_gateway" {
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.main_plan.id
   docker_image        = "${var.docker_hub_user}/gateway-service"
-  docker_tag          = "latest"
+  port = 8080
 
   app_settings = {
     "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE" = "https://${module.service_eureka.default_hostname}/eureka/"

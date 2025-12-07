@@ -1,0 +1,22 @@
+name: CD - Driver Service
+
+on:
+  workflow_run:
+    workflows: ["CI - Driver Service"]
+    types: [completed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "driver-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/driver-service:${{ github.event.workflow_run.head_sha }}"
