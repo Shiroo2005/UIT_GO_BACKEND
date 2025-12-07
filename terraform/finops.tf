@@ -1,13 +1,12 @@
-##############################################
-# FINOPS: Azure Budget with Dynamic Dates
-##############################################
-
-# Lấy ngày hiện tại (time_static = tạo 1 timestamp cố định lúc apply)
 resource "time_static" "now" {}
 
-# Lấy ngày 1 năm sau từ ngày hiện tại
+locals {
+  # Lấy năm và tháng hiện tại, ép ngày = 01
+  start_of_month = "${substr(time_static.now.rfc3339, 0, 8)}01T00:00:00Z"
+}
+
 resource "time_offset" "one_year_later" {
-  base_rfc3339 = time_static.now.rfc3339
+  base_rfc3339 = local.start_of_month
   offset_years = 1
 }
 
@@ -18,13 +17,11 @@ resource "azurerm_consumption_budget_resource_group" "project_budget" {
   amount     = 50
   time_grain = "Monthly"
 
-  # Dùng formatdate vì Azure yêu cầu format: YYYY-MM-DDTHH:MM:SSZ
   time_period {
-    start_date = formatdate("YYYY-MM-DD", time_static.now.rfc3339)
-    end_date   = formatdate("YYYY-MM-DD", time_offset.one_year_later.rfc3339)
+    start_date = local.start_of_month
+    end_date   = time_offset.one_year_later.rfc3339
   }
 
-  # Cảnh báo 80%
   notification {
     enabled        = true
     threshold      = 80.0
@@ -33,7 +30,6 @@ resource "azurerm_consumption_budget_resource_group" "project_budget" {
     contact_emails = ["23521220@gm.uit.edu.com"]
   }
 
-  # Cảnh báo 100%
   notification {
     enabled        = true
     threshold      = 100.0
