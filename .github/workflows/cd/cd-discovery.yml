@@ -1,8 +1,8 @@
-name: CD - API Gateway
+name: CD - Discovery Service
 
 on:
   workflow_run:
-    workflows: ["CD - API Gateway"]
+    workflows: ["CI - Discovery Service"]
     types: [completed]
 
 jobs:
@@ -18,5 +18,5 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "api-gateway"
-          images: "${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.event.workflow_run.head_sha }}"
+          app-name: "eureka-server"
+          images: "${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.event.workflow_run.head_sha }}"

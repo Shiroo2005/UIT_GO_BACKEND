@@ -1,8 +1,8 @@
-name: CD - Discovery Service
+name: CD - Driver Service
 
 on:
   workflow_run:
-    workflows: ["CI - Discovery Service"]
+    workflows: ["CI - Driver Service"]
     types: [completed]
 
 jobs:
@@ -18,5 +18,5 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "eureka-server"
-          images: "${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.event.workflow_run.head_sha }}"
+          app-name: "driver-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/driver-service:${{ github.event.workflow_run.head_sha }}"

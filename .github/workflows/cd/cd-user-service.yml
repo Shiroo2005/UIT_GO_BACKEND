@@ -1,8 +1,8 @@
-name: CD - Driver Service
+name: CD - User Service
 
 on:
   workflow_run:
-    workflows: ["CI - Driver Service"]
+    workflows: ["CI - User Service"]
     types: [completed]
 
 jobs:
@@ -18,5 +18,5 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "driver-service"
-          images: "${{ secrets.DOCKER_USERNAME }}/driver-service:${{ github.event.workflow_run.head_sha }}"
+          app-name: "user-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/user-service:${{ github.event.workflow_run.head_sha }}"

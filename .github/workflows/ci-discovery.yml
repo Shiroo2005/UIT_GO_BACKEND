@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - test/CD
     paths:
       - "eureka-server/**"
       - ".github/workflows/ci-discovery.yml"

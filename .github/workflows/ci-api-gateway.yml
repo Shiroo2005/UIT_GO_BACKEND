@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - test/CD
     paths:
       - 'api-gateway/**'
       - '.github/workflows/ci-api-gateway.yml'

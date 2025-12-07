@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - test/CD
     paths:
       - 'driver-service/**'
       - '.github/workflows/ci-driver-service.yml'
