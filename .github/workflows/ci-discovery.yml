@@ -1,4 +1,4 @@
-name: CI - Discovery Service
+name: CI-Discovery-Service
 
 on:
   push:

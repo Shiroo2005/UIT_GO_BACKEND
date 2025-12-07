@@ -1,8 +1,8 @@
-name: CD - Driver Service
+name: CD-Driver-Service
 
 on:
   workflow_run:
-    workflows: ["CI - Driver Service"]
+    workflows: ["CI-Driver-Service"]
     types:
       - completed
     branches:

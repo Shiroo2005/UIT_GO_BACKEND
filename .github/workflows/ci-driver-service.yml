@@ -1,4 +1,4 @@
-name: CI - Driver Service
+name: CI-Driver-Service
 
 on:
   push:

@@ -1,8 +1,8 @@
-name: CD - Trip Service
+name: CD-Trip-Service
 
 on:
   workflow_run:
-    workflows: ["CI - Trip Service"]
+    workflows: ["CI-Trip-Service"]
     types:
       - completed
     branches:

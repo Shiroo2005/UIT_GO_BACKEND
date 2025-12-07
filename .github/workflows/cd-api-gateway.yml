@@ -1,10 +1,10 @@
 # File: cd-api-gateway.yml
 
-name: CD - API Gateway
+name: CD-API-Gateway
 
 on:
   workflow_run:
-    workflows: ["CI - API Gateway"]
+    workflows: ["CI-API-Gateway"]
     types:
       - completed
     branches:

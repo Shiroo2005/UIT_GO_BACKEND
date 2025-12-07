@@ -2,7 +2,7 @@ name: CD - User Service
 
 on:
   workflow_run:
-    workflows: ["CI - User Service"]
+    workflows: ["CI-User-Service"]
     types:
       - completed
     branches:
