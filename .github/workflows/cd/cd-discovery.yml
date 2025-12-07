@@ -18,5 +18,5 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "eureka-server"
+          app-name: "uit-go-eureka-server"
           images: "${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.event.workflow_run.head_sha }}"
