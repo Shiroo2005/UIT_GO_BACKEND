@@ -79,8 +79,8 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: "uit-go-trip-service"
-          images: "${{ secrets.DOCKER_USERNAME }}/trip-service:${{ github.sha}}"
+          app-name: "uit-go-user-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/user-service:${{ github.sha}}"
 
 
 
