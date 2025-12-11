@@ -5,15 +5,15 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://discovery-server:8761/eureka/
+      defaultZone: ${EUREKA_URL:http://discovery-server:8761/eureka/}
   instance:
     prefer-ip-address: true
 spring:
   data:
     redis:
-      host: redis-driver-db
-      port: 6379
-      password: ${REDIS_PASSWORD}
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6380}
+      password: ${REDIS_PASSWORD:123}
       database: 0
   kafka:
     consumer:

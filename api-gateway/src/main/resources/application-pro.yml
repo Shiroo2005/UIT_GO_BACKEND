@@ -5,7 +5,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://discovery-server:8761/eureka/
+      defaultZone: ${CLIENT_URL}
 spring:
   cloud:
     gateway:
@@ -36,4 +36,4 @@ springdoc:
         url: /driver-service/v3/api-docs
 
 jwt:
-  public-key: ${JWT_PUBLIC_KEY}
+  public-key: ${JWT_PUBLIC_KEY:-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyVNBqfD1Ia48pRPIJ0Ji 3lvwFb+d64Jeb5hbQA2vY5RcOpuH6lPXom4/ESMP0dj2Vg345uU79GCvMEEBFqyh k3HtCPS/0maPQ/VZIEtxr5+4lw0K67KXgF1/2GydFSkiWUQ2rdzbQ8DfMpLxvbjg YDoRgdWBNtvR/eHPCXIfgynl/GjI8Wgougi4BgskpFxmdF8celPJkLN/0xqzCQch 8ZC0L3VVzMhyvMCVHAHrxnL6ELApPdOjLOsmR+BeXj8saiKXl+zIT56NkBdFzVZh lAq+2j5gdnb1iwS7cmYK9JWNRtVctMWY+fbxCxRRO3tdgJGwwo9nLkhKeg3epkLg YwIDAQAB -----END PUBLIC KEY-----}

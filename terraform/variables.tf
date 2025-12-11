@@ -9,7 +9,7 @@ variable "location" {
 variable "docker_hub_user" {
   description = "Your Docker Hub username where images are stored"
   type        = string
-  default     = "uitgoteam"
+  default     = "phuctieuhoang"
 }
 
 variable "db_admin_username" {

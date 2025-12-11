@@ -1,19 +1,16 @@
-name: CI - Discovery Service
+name: CI-Discovery-Service
 
 on:
   push:
     branches:
       - main
       - develop
+      - test/CD
     paths:
       - "eureka-server/**"
       - ".github/workflows/ci-discovery.yml"
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - "eureka-server/**"
+  workflow_dispatch:
+
 
 jobs:
   build-test-docker:
@@ -64,3 +61,20 @@ jobs:
       #     name: eureka-server-jar
       #     path: eureka-server/build/libs/*.jar
 
+
+  deploy:
+    needs: build-test-docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/test/CD'
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "uit-go-eureka-server"
+          images: "${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.sha}}"

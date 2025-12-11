@@ -1,19 +1,15 @@
-name: CI - User Service
+name: CI-User-Service
 
 on:
   push:
     branches:
       - main
+      - test/CD
       - develop
     paths:
       - "user-service/**"
       - ".github/workflows/ci-user-service.yml"
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - "user-service/**"
+  workflow_dispatch:
 
 jobs:
   build-test-docker:
@@ -63,3 +59,22 @@ jobs:
       #   with:
       #     name: user-service-jar
       #     path: user-service/build/libs/*.jar
+  deploy:
+    needs: build-test-docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/test/CD'
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "uit-go-user-service"
+          images: "${{ secrets.DOCKER_USERNAME }}/user-service:${{ github.sha}}"
+
+
+
