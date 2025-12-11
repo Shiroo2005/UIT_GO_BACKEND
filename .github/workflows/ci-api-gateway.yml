@@ -9,12 +9,6 @@ on:
     paths:
       - 'api-gateway/**'
       - '.github/workflows/ci-api-gateway.yml'
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - 'api-gateway/**'
   workflow_dispatch:
 
 

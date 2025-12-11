@@ -9,12 +9,6 @@ on:
     paths:
       - "trip-service/**"
       - ".github/workflows/ci-trip-service.yml"
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - "trip-service/**"
   workflow_dispatch:
 
 jobs:

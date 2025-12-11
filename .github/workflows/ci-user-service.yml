@@ -9,12 +9,6 @@ on:
     paths:
       - "user-service/**"
       - ".github/workflows/ci-user-service.yml"
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - "user-service/**"
   workflow_dispatch:
 
 jobs:

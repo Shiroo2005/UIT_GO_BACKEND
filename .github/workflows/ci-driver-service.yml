@@ -9,12 +9,6 @@ on:
     paths:
       - 'driver-service/**'
       - '.github/workflows/ci-driver-service.yml'
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - 'driver-service/**'
   workflow_dispatch:
 
 jobs:

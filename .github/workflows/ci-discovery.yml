@@ -9,12 +9,6 @@ on:
     paths:
       - "eureka-server/**"
       - ".github/workflows/ci-discovery.yml"
-  pull_request:
-    branches:
-      - main
-      - develop
-    paths:
-      - "eureka-server/**"
   workflow_dispatch:
 
 
