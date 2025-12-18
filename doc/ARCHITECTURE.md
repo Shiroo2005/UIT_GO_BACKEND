@@ -4,9 +4,6 @@
 
 Đây là kiến trúc "Bộ Xương" Microservices (Giai đoạn 1) của hệ thống.
 
-
-*Sơ đồ này cần thể hiện rõ 3 microservices chính: UserService, TripService, DriverService, cơ sở dữ liệu riêng biệt cho mỗi service, và cách chúng giao tiếp với nhau (qua API Gateway hoặc trực tiếp).*
-
 ![Sơ đồ tổng quan](./images/architecture.png)
 ![Sơ đồ database](./images/database.png)
 
@@ -24,17 +21,18 @@
 
 ## 2. Sơ đồ Kiến trúc Module Chuyên sâu
 
-**Tên Module:** <Tên module được chọn>
+**Tên Module:** Thiết kế cho Automation & Cost Optimization (FinOps) (Module E)
 
-
-*(Sơ đồ này cần đi chi tiết vào các thành phần kỹ thuật được áp dụng trong module chuyên sâu. Ví dụ:*
-* *Module A: Thể hiện SQS, ElastiCache, Auto Scaling Group, Read Replicas.*
-* *Module B: Thể hiện Multi-AZ, Load Balancer, các cơ chế Circuit Breaker.*
-* *Module C: Thể hiện rõ kiến trúc VPC (private/public subnets), Security Groups, Cognito, KMS.*
-* *Module D: Thể hiện luồng đi của logs, metrics, traces về CloudWatch và X-Ray.*
-* *Module E: Thể hiện pipeline CI/CD của GitHub Actions và cấu trúc module của Terraform.*
-*)*
+![Sơ đồ hệ thống](./images/overall_architecture.jpg)
 
 ### Giải thích thiết kế Module
 
-[Giải thích các quyết định thiết kế chi tiết cho module chuyên sâu, các công nghệ đã chọn và lý do chọn chúng để giải quyết các nhiệm vụ cụ thể của module].
+1.  **Azure App Service** thay cho **Kubernetes**
+    * Độ khó triển khai ban đầu: Azure App Service có độ khó thấp hơn so với Kubernetes
+    * Chi phí hạ tầng: Azure App Service có chi phí hạ tầng thấp hơn so với Kubernetes (10$-15$/tháng so với 70$-100$/tháng cho 3 node)
+2.  **Azure Event Hubs** thay cho **VM with Kafka**
+    * Độ khó triển khai ban đầu: Azure Event Hubs có độ khó thấp hơn so với triển khai VM với Kafka
+    * Chi phí hạ tầng: Việc triển khai VM với Kafka tiêu tốn chi phí cao hơn so với việc dùng Azure Event Hubs (Azure Event Hub tốn 30$-40$/tháng trong khi triển khai với Kafka có thể tốn 130$-140$/tháng cho 3   node trên cùng 1 VM)
+3.  **Docker Hub** thay cho **Azure ACR**
+    * Chi phí hạ tầng: Docker Hub hoàn toàn free trong khi Azure ACR sẽ có chi phí định kỳ --> không phù hợp với mục tiêu tối ưu hóa chi phí của module E
+    * Khả năng tích hợp CI/CD: Docker Hub dễ dàng và nhanh chóng hơn so với Azure ACR (cần nhiều cấu hình)
