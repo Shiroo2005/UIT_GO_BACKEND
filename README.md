@@ -45,7 +45,7 @@ Hệ thống có thể được khởi chạy đầy đủ trên môi trường 
     * **TripService:** `http://localhost:PORT_TRIP`
     * **DriverService:** `http://localhost:PORT_DRIVER`
 
-## ☁️ Hướng dẫn triển khai lên AWS
+## ☁️ Hướng dẫn triển khai lên Azure
 
 Hệ thống được quản lý hạ tầng bằng Terraform.
 
