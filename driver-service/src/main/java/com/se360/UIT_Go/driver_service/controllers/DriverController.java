@@ -6,6 +6,7 @@ import com.se360.UIT_Go.driver_service.dto.DriverLocationRequest;
 import com.se360.UIT_Go.driver_service.dto.SearchDriversNearRequest;
 import com.se360.UIT_Go.driver_service.services.driver.IDriverService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class DriverController {
     @PutMapping("/{id}/location")
     public void updateDriverLocation(@Parameter(hidden = true) @RequestHeader("X-User-ID") String userId,
                                      @PathVariable("id") String driverId,
-                                     @RequestBody() DriverLocationRequest driverLocationRequest) {
+                                     @Valid @RequestBody() DriverLocationRequest driverLocationRequest) {
 
         if (!userId.equals(driverId)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "USER ID NOT MATCH");
 
@@ -38,7 +39,8 @@ public class DriverController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/nears/{radiusKm}")
-    public String[] searchDriverLocation(@PathVariable("radiusKm") Long radiusKm, @RequestBody() SearchDriversNearRequest searchDriverLocationRequest) {
+    public String[] searchDriverLocation(@PathVariable("radiusKm") Long radiusKm, @Valid @RequestBody() SearchDriversNearRequest searchDriverLocationRequest) {
+        if (radiusKm == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Radius invalid");
         return this.driverService.searchDriversNear(searchDriverLocationRequest.getLat(), searchDriverLocationRequest.getLng(), radiusKm);
     }
 

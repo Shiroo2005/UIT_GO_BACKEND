@@ -1,15 +1,20 @@
 package com.se360.UIT_Go.driver_service.dto;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 public class SearchDriversNearRequest {
-    @NonNull
-    private Double lat; // Vĩ độ
 
-    @NonNull
-    private Double lng; // Kinh độ
+    @NotNull(message = "Latitude must not be null")
+    @DecimalMin(value = "-90.0", message = "Latitude must be >= -90")
+    @DecimalMax(value = "90.0", message = "Latitude must be <= 90")
+    private Double lat;
 
-
+    @NotNull(message = "Longitude must not be null")
+    @DecimalMin(value = "-180.0", message = "Longitude must be >= -180")
+    @DecimalMax(value = "180.0", message = "Longitude must be <= 180")
+    private Double lng;
 }

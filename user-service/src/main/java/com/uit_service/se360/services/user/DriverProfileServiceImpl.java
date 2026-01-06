@@ -32,9 +32,20 @@ public class DriverProfileServiceImpl implements DriverProfileService {
             .orElseThrow(() -> new RuntimeException("User not found"));
     user.setRole(UserRole.DRIVER);
     user = userRepository.save(user);
+
+    //VALIDATE INPUT
+    //UNIQUE licensePlate
+      if(driverProfileRepository.exists((root, query, criteriaBuilder) ->
+              criteriaBuilder.like(root.get("licensePlate").as(String.class), request.getLicensePlate())
+              ))
+          throw new RuntimeException("Driver with this license plate already exists");
+
+
     var driverProfile = driverProfileMapper.requestToEntity(request);
     driverProfile.setId(UuidCreator.getTimeOrderedEpoch().toString());
     driverProfile.setUser(user);
+
+
     var savedProfile = driverProfileRepository.save(driverProfile);
     return driverProfileMapper.entityToResponse(savedProfile);
   }

@@ -8,12 +8,18 @@ services:
     depends_on:
       discovery-server:
         condition: service_healthy
+      user-service:
+        condition: service_healthy
+      trip-service:
+        condition: service_healthy
+      driver-service:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://discovery-server:8761/eureka/apps/api-gateway"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
       interval: 5s
       timeout: 3s
       retries: 30

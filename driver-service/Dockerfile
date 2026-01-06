@@ -20,6 +20,8 @@ RUN ./gradlew clean bootJar --no-daemon
 # ============================
 FROM eclipse-temurin:17-jre-alpine
 
+RUN apk add --no-cache curl
+
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 WORKDIR /app
@@ -32,5 +34,4 @@ USER appuser
 
 EXPOSE 8080
 
-# CMD ["java", "-jar", "app.jar"]
-CMD ["/bin/sh", "-c", "echo \"Waiting for ${START_SLEEP_SECONDS:-0} seconds before starting...\"; sleep ${START_SLEEP_SECONDS:-0}; exec java -jar app.jar"]
+CMD ["java", "-jar", "app.jar"]

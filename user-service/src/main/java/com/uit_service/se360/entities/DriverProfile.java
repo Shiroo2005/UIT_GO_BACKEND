@@ -17,10 +17,10 @@ public class DriverProfile extends BaseEntity {
   @Column(nullable = false, unique = true)
   private String licensePlate;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private String vehicleModel;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private String vehicleColor;
 
   @OneToOne(optional = false, fetch = FetchType.LAZY)

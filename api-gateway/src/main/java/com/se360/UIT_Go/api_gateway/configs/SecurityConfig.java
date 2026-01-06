@@ -1,7 +1,6 @@
 package com.se360.UIT_Go.api_gateway.configs;
 
 import com.nimbusds.jose.util.Base64;
-import com.se360.UIT_Go.api_gateway.constants.SecurityConstant;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +13,7 @@ import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import com.se360.UIT_Go.api_gateway.constants.SecurityConstant;
 
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
